@@ -4,8 +4,8 @@ PATH=Home/Groceries/Food Cupboard/Tins & Packets/Instant food products
 PATH=Home/Groceries/Fresh Food/Dairy , Eggs & Cheese/Milks/UHT-milk
 2.abrasive cleaner
 PATH=Home/Groceries/Household/Cleaning/abrasive cleaner
-3.artif. sweetener
-PATH=Home/Groceries/Food Cupboard/Sugar & Sweetners/artif. sweetener
+3.artificial sweetener
+PATH=Home/Groceries/Food Cupboard/Sugar & Sweetners/artificial sweetener
 4.baby cosmetics
 PATH=Home/Groceries/Baby/baby cosmetics
 5.baby food
@@ -175,15 +175,15 @@ PATH=Home/Groceries/Health & Beauty/Beauty & Skincare/make up remover
 88.male cosmetics
 PATH=Home/Groceries/Health & Beauty/Beauty & Skincare/male cosmetics
 89.margarine
-PATH:Home/Groceries/Fresh Food/Dairy , Eggs & Cheese/Butter/margarine
+PATH=Home/Groceries/Fresh Food/Dairy , Eggs & Cheese/Butter/margarine
 90.mayonnaise
 PATH=Home/Groceries/Food Cupboard/Condiments & Table Sauces/Mayonnaise & Salad Cream/mayonnaise
 91.meat
 PATH=Home/Groceries/Fresh Food/Meat, Fish & Poultry/meat
 92.meat spreads
 PATH=Home/Groceries/Fresh Food/Dairy , Eggs & Cheese/meat spreads
-93.misc. beverages
-PATH=Home/Groceries/Drinks/Others/misc. beverages
+93.misc beverages
+PATH=Home/Groceries/Drinks/Others/misc beverages
 94.mustard
 PATH=Home/Groceries/Food Cupboard/Cooking Ingredients/Herbs, Spices & Salt/mustard
 95.napkins
@@ -315,7 +315,7 @@ PATH=Home/Groceries/Household/Cleaning/Toilet Cleaner & Blocks/toilet cleaner
 158.tropical fruit
 PATH=Home/Groceries/Fresh Food/Fresh Fruit/tropical fruit
 159.turkey
-PATH:Home/Groceries/Fresh Food/Meat, Fish & Poultry/Chicken & Turkey/turkey
+PATH=Home/Groceries/Fresh Food/Meat, Fish & Poultry/Chicken & Turkey/turkey
 160.vinegar
 PATH=Home/Groceries/Food Cupboard/Condiments & Table Sauces/vinegar
 161.waffles
@@ -325,7 +325,7 @@ PATH=Home/Groceries/Fresh Food/Dairy , Eggs & Cheese/whipped sour cream
 163.whisky
 PATH=Home/Groceries/Drinks/Spirits, Liqueurs & Fortified Wines/whisky
 164.white bread
-PATH:Home/Groceries/Bakery/Breads/white bread
+PATH=Home/Groceries/Bakery/Breads/white bread
 165.white wine
 PATH=Home/Groceries/Drinks/Spirits, Liqueurs & Fortified Wines/white wine
 166.whole milk
@@ -334,4 +334,3 @@ PATH=Home/Groceries/Fresh Food/Dairy , Eggs & Cheese/Milks/whole milk
 PATH=Home/Groceries/Fresh Food/Dairy , Eggs & Cheese/yogurt
 168.zwieback
 PATH=Home/Groceries/Bakery/Breads/zwieback
-
