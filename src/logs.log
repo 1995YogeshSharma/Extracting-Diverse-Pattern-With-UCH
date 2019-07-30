@@ -1,0 +1,24 @@
+INFO:root:processing pattern tropical_fruit
+INFO:root:projection is created
+DEBUG:root:In calculate_nodes_at_each_level
+DEBUG:root:processing for node Home
+DEBUG:root:processing for node Groceries
+DEBUG:root:processing for node Fresh_Food
+DEBUG:root:processing for node Fresh_Fruit
+DEBUG:root:processing for node tropical_fruit
+INFO:root:processing pattern tropical_fruit
+INFO:root:projection is created
+DEBUG:root:In calculate_nodes_at_each_level
+DEBUG:root:processing for node Home
+DEBUG:root:processing for node Groceries
+DEBUG:root:processing for node Fresh_Food
+DEBUG:root:processing for node Fresh_Fruit
+DEBUG:root:processing for node tropical_fruit
+INFO:root:processing pattern tropical_fruit
+INFO:root:projection is created
+DEBUG:root:In calculate_nodes_at_each_level
+DEBUG:root:processing for node Home
+DEBUG:root:processing for node Groceries
+DEBUG:root:processing for node Fresh_Food
+DEBUG:root:processing for node Fresh_Fruit
+DEBUG:root:processing for node tropical_fruit
