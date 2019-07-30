@@ -1,4 +1,5 @@
 # @author 1995YogeshSharma
+from __future__ import division
 import sys
 import copy
 import logging
@@ -68,6 +69,7 @@ class Tree(object):
         """Prints tree in level order."""
 
         if self.root is None:
+            logging.debug("Tree is not built.")
             print "Tree is not built"
             return
 
@@ -79,6 +81,7 @@ class Tree(object):
             has_child = 0
             
             for child in current.children:
+                logging.debug(child.value + " - ")
                 print child.value + " - ",
                 queue.append(child)
                 has_child = 1
@@ -95,7 +98,7 @@ class Tree(object):
 
     def calculate_nodes_at_each_level(self):
         logging.debug("In calculate_nodes_at_each_level")
-        for i in range(0, self.height):
+        for i in range(0, self.height+1):
             self.nodes_at_level[str(i)] = 0
             self.real_edges_at_level[str(i)] = 0
             self.fake_edges_at_level[str(i)] = 0
@@ -104,39 +107,43 @@ class Tree(object):
 
         self.nodes_at_level[str(self.root.depth)] = 1
         queue = [self.root]
-        while len(queue) > 0:
-            current = queue[0]
-            if current.is_leaf():
+        try:
+            while len(queue) > 0:
+                current = queue[0]
+                if current.is_leaf():
+                    if len(queue) >= 1:
+                        queue = queue[1:]
+                    continue
+                logging.debug("processing for node %s", current.value)
+
+                child_cnt = 0
+                real_child_cnt = 0
+                fake_child_cnt = 0
+                is_leaf_level = False
+                for child in current.children:
+                    queue.append(child)
+                    child_cnt += 1
+                    if child.is_dummy:
+                        fake_child_cnt += 1
+                    else:
+                        real_child_cnt += 1
+                    if child.is_leaf():
+                        is_leaf_level = True
+                if not is_leaf_level:
+                    self.nodes_at_level[str(current.depth+1)] += child_cnt
+                self.real_edges_at_level[str(current.depth)] += real_child_cnt
+                self.fake_edges_at_level[str(current.depth)] += fake_child_cnt
+
                 if len(queue) >= 1:
                     queue = queue[1:]
-            logging.debug("processing for node %s", current.value)
+        except KeyError as E:
+            print "KEY ERROR OCCURED for ", str(current.depth)
+            print "Is leaf ", str(is_leaf_level)
 
-            child_cnt = 0
-            real_child_cnt = 0
-            fake_child_cnt = 0
-            is_leaf_level = False
-            for child in current.children:
-                queue.append(child)
-                child_cnt += 1
-                if child.is_dummy:
-                    fake_child_cnt += 1
-                else:
-                    real_child_cnt += 1
-                if child.is_leaf():
-                    is_leaf_level = True
-            if not is_leaf_level:
-                self.nodes_at_level[str(current.depth+1)] += child_cnt
-            self.real_edges_at_level[str(current.depth)] += real_child_cnt
-            self.fake_edges_at_level[str(current.depth)] += fake_child_cnt
-
-            if len(queue) >= 1:
-                queue = queue[1:]
         return 
 
     def convert_to_balanced(self, current):
 
-        print "Processing for node ",
-        print current.value
         # check if any children of current is leaf
         for child_num in range(0, len(current.children)):
             # if leaf, extend
@@ -159,26 +166,34 @@ class Tree(object):
                     
             else:
                 self.convert_to_balanced(current.children[child_num])
-
-            # self.calculate_nodes_at_each_level()
         return
 
     def get_level_factor(self, depth):
         """Returns level factor for a given depth"""
+        if depth > (self.height - 1):
+            return 0
+
         return (2 * (self.height - depth)) / (self.height * (self.height - 1))
 
     def get_merge_factor(self, depth):
         """ MF = (Num nodes at level `depth` - 1) / (Num nodes at level `depth + 1` -1)"""
-        if len(self.nodes_at_level) == 0:
-            self.calculate_nodes_at_each_level()
-
-        if self.nodes_at_level[str(depth)] - 1 == 0:
+        if depth >= self.height:
             return 0
-        if self.nodes_at_level[str(depth+1)] - 1 == 0:
-            raise ValueError
-        return (self.nodes_at_level[str(depth)] - 1) / (self.nodes_at_level[str(depth+1)] - 1)
+        if self.nodes_at_level[str(depth)] == self.nodes_at_level[str(depth+1)]:
+            return 1
+        if self.nodes_at_level[str(depth+1)] == 0:
+            return 0
+        logging.debug("In get_merge_factor factor")
+        logging.debug("depth %s", depth)
+        logging.debug("nodes at level depth %s", self.nodes_at_level[str(depth)])
+        logging.debug("nodes at level depth + 1 %s", self.nodes_at_level[str(depth+1)])
+
+        return (self.nodes_at_level[str(depth)] - 1) / (
+            self.nodes_at_level[str(depth+1)] - 1)
 
     def get_adjustment_factor(self, depth):
+        if depth >= self.height:
+            return 0
         return self.real_edges_at_level[str(depth)] / (
             self.real_edges_at_level[str(depth)] + self.fake_edges_at_level[str(depth)])
 
@@ -218,51 +233,59 @@ def read_input():
             is_item = 1
     
     # threshold randomly decided
-    freq_patterns = patterns.extract_frequent_patterns(fpat, 4)
-    print "Frequent pattern read. "
-
-     # CH.print_tree()
+    freq_patterns = patterns.extract_frequent_patterns(fpat, 0.1)
+    
     return (item_path_dict, freq_patterns)
 
 
 def main():
     (item_path_dict, freq_patterns) = read_input()
-
-    # drank for a pattern
-    dranks = []
+    
+    dranks = [0]*len(freq_patterns)
     idx = 0
     for pattern in freq_patterns:
         logging.info("processing pattern %s", ' '.join(pattern))
+        print "processing pattern %s", ' '.join(pattern)
         CH = Tree()
         for item in pattern:
             CH.insert_nodes(item_path_dict[item])
         logging.info("projection is created")
+        
         CH.convert_to_balanced(CH.root)
-    #     logging.info("converted to balanced CH")
-    #     CH.print_tree()
-    #     # calculating drank
-    #     drank = 0
-    #     for level in range(1, CH.height-1):
-    #         logging.debug('nodes info at level ' + str(level))
-    #         logging.debug(CH.nodes_at_level[str(level)])
-    #         logging.debug(CH.real_edges_at_level[str(level)])
-    #         logging.debug(CH.fake_edges_at_level[str(level)])
-    #         level_factor = CH.get_level_factor(level)
-    #         merge_factor = CH.get_merge_factor(level)
-    #         adjustment_factor = CH.get_adjustment_factor(level)
+        CH.calculate_nodes_at_each_level()
+        logging.debug("balanced CH")
+        
+        drank = 0
+        for level in range(1, CH.height):
+            logging.debug('nodes info at level ' + str(level))
+            logging.debug(CH.nodes_at_level[str(level)])
+            logging.debug(CH.real_edges_at_level[str(level)])
+            logging.debug(CH.fake_edges_at_level[str(level)])
+            level_factor = CH.get_level_factor(level)
+            merge_factor = CH.get_merge_factor(level)
+            adjustment_factor = CH.get_adjustment_factor(level)
+            logging.debug("level factor " + str(level_factor))
+            logging.debug("merge_factor " + str(merge_factor))
+            logging.debug("adjustment_factor " + str(adjustment_factor))
 
-    #         drank += merge_factor * adjustment_factor * level_factor
-    #         logging.debug("drank till level " + str(level) + " is " + str(drank))
-    #     dranks[idx] = drank
-    #     idx += 1
+            drank += merge_factor * adjustment_factor * level_factor
+            logging.debug("drank till level " + str(level) + " is " + str(drank))
+        dranks[idx] = drank
+        idx += 1
+        del CH
 
-    # # Now we have drank for evey frequent pattern.
-    # for i in range(0, len(freq_patterns)):
-    #     print "pattern - ",
-    #     print freq_patterns[i]
-    #     print "drank - "
-    #     print dranks[i]
-    #     print '\n'
+    # convert patterns to list
+    fin_patterns = []
+    for i in freq_patterns:
+        fin_patterns.append(' '.join(i))
+
+    # Now we have drank for evey frequent pattern.
+    for i in range(0, len(freq_patterns)):
+        print "pattern ", str(i), "- ",
+        print fin_patterns[i]
+        print "drank - "
+        print dranks[i]
+        print '\n'
 
 
 if __name__ == '__main__':

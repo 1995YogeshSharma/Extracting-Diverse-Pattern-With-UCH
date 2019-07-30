@@ -23,4 +23,4 @@ def extract_frequent_patterns(fpat, thres):
     return pyfpgrowth.find_frequent_patterns(all_patterns, thres)
 
 if __name__ == '__main__':
-    print extract_frequent_patterns(open('../dataset/sample_patterns.txt', 'r'), 7)
+    print extract_frequent_patterns(open('../dataset/sample_patterns.txt', 'r'), 0.1)
