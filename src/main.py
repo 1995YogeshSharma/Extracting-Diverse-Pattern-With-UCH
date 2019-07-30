@@ -160,7 +160,7 @@ class Tree(object):
             else:
                 self.convert_to_balanced(current.children[child_num])
 
-            self.calculate_nodes_at_each_level()
+            # self.calculate_nodes_at_each_level()
         return
 
     def get_level_factor(self, depth):
@@ -238,31 +238,31 @@ def main():
             CH.insert_nodes(item_path_dict[item])
         logging.info("projection is created")
         CH.convert_to_balanced(CH.root)
-        logging.info("converted to balanced CH")
-        CH.print_tree()
-        # calculating drank
-        drank = 0
-        for level in range(1, CH.height-1):
-            logging.debug('nodes info at level ' + str(level))
-            logging.debug(CH.nodes_at_level[str(level)])
-            logging.debug(CH.real_edges_at_level[str(level)])
-            logging.debug(CH.fake_edges_at_level[str(level)])
-            level_factor = CH.get_level_factor(level)
-            merge_factor = CH.get_merge_factor(level)
-            adjustment_factor = CH.get_adjustment_factor(level)
+    #     logging.info("converted to balanced CH")
+    #     CH.print_tree()
+    #     # calculating drank
+    #     drank = 0
+    #     for level in range(1, CH.height-1):
+    #         logging.debug('nodes info at level ' + str(level))
+    #         logging.debug(CH.nodes_at_level[str(level)])
+    #         logging.debug(CH.real_edges_at_level[str(level)])
+    #         logging.debug(CH.fake_edges_at_level[str(level)])
+    #         level_factor = CH.get_level_factor(level)
+    #         merge_factor = CH.get_merge_factor(level)
+    #         adjustment_factor = CH.get_adjustment_factor(level)
 
-            drank += merge_factor * adjustment_factor * level_factor
-            logging.debug("drank till level " + str(level) + " is " + str(drank))
-        dranks[idx] = drank
-        idx += 1
+    #         drank += merge_factor * adjustment_factor * level_factor
+    #         logging.debug("drank till level " + str(level) + " is " + str(drank))
+    #     dranks[idx] = drank
+    #     idx += 1
 
-    # Now we have drank for evey frequent pattern.
-    for i in range(0, len(freq_patterns)):
-        print "pattern - ",
-        print freq_patterns[i]
-        print "drank - "
-        print dranks[i]
-        print '\n'
+    # # Now we have drank for evey frequent pattern.
+    # for i in range(0, len(freq_patterns)):
+    #     print "pattern - ",
+    #     print freq_patterns[i]
+    #     print "drank - "
+    #     print dranks[i]
+    #     print '\n'
 
 
 if __name__ == '__main__':
